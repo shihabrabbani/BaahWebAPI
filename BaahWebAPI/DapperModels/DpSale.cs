@@ -1,6 +1,6 @@
 ﻿namespace BaahWebAPI.DapperModels
 {
-    public class DpSale
+    public class DPSale
     {
         public int OrderId { get; set; }
         public string Date { get; set; }

@@ -149,7 +149,7 @@ namespace BaahWebAPI.Controllers
 
             //var list = dapper.Con().Query<DpProfit>("select cast(Date as date) as Date,sum(TotalSale) as TotalSale from view_salesreport where cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) group by CAST(Date as Date)");
             string query = "select `wp_c84s672ma8_wc_order_stats`.`order_id` as `OrderId`,`wp_c84s672ma8_wc_order_stats`.`date_created` AS `Date`,`wp_c84s672ma8_wc_order_stats`.`num_items_sold` AS `ItemsSold`,`wp_c84s672ma8_wc_order_stats`.`total_sales` AS `TotalSale`,IF(`wp_c84s672ma8_wc_order_stats`.`status`= 'wc-pending', 'Pending', IF(`wp_c84s672ma8_wc_order_stats`.`status`= 'wc-processing', 'Processing', IF(`wp_c84s672ma8_wc_order_stats`.`status`= 'wc-completed', 'Completed', IF(`wp_c84s672ma8_wc_order_stats`.`status`= 'wc-refunded', 'Refunded', IF(`wp_c84s672ma8_wc_order_stats`.`status`= 'wc-trash', 'Trash', IF(`wp_c84s672ma8_wc_order_stats`.`status`= 'wc-cancelled', 'Cancelled', `wp_c84s672ma8_wc_order_stats`.`status`))))))as Status ,(((SELECT meta_value FROM baahstore.wp_c84s672ma8_postmeta where post_id=`wp_c84s672ma8_wc_order_stats`.`order_id` and meta_key = '_alg_wc_cog_order_profit') + (SELECT meta_value FROM baahstore.wp_c84s672ma8_postmeta where  post_id=`wp_c84s672ma8_wc_order_stats`.`order_id` and meta_key = '_order_shipping')) -  (SELECT meta_value FROM baahstore.wp_c84s672ma8_postmeta where post_id=`wp_c84s672ma8_wc_order_stats`.`order_id` and meta_key = '_wc_cost_of_shipping')) as Profit from `wp_c84s672ma8_wc_order_stats` where cast(`wp_c84s672ma8_wc_order_stats`.`date_created` as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) order by order_id desc;";
-            var list = dapper.Con().Query<DpProfit>(query);
+            var list = dapper.Con().Query<Profit>(query);
 
 
             //var dates = list.Select(x => x.Date.ToString("dd/MM/yyyy")).ToList();
@@ -157,7 +157,7 @@ namespace BaahWebAPI.Controllers
             //ViewBag.Dates = list.Select(x => x.Date.ToString("dd/MM/yyyy")).ToList();
             ViewBag.fDate = null;
             ViewBag.tDate = null;
-            ViewBag.List = list.Where(f => f.Profit != null).ToList();
+            ViewBag.List = list.Where(f => f.TotalProfit != null).ToList();
 
             return View();
         }
@@ -168,13 +168,13 @@ namespace BaahWebAPI.Controllers
             string fDate = FromDate.ToString("yyyy-MM-dd");
             string tDate = ToDate.ToString("yyyy-MM-dd");
 
-            var list = dapper.Con().Query<DpProfit>("select `wp_c84s672ma8_wc_order_stats`.`order_id` as `OrderId`,`wp_c84s672ma8_wc_order_stats`.`date_created` AS `Date`,`wp_c84s672ma8_wc_order_stats`.`num_items_sold` AS `ItemsSold`,`wp_c84s672ma8_wc_order_stats`.`total_sales` AS `TotalSale`,IF(`wp_c84s672ma8_wc_order_stats`.`status`= 'wc-pending', 'Pending', IF(`wp_c84s672ma8_wc_order_stats`.`status`= 'wc-processing', 'Processing', IF(`wp_c84s672ma8_wc_order_stats`.`status`= 'wc-completed', 'Completed', IF(`wp_c84s672ma8_wc_order_stats`.`status`= 'wc-refunded', 'Refunded', IF(`wp_c84s672ma8_wc_order_stats`.`status`= 'wc-trash', 'Trash', IF(`wp_c84s672ma8_wc_order_stats`.`status`= 'wc-cancelled', 'Cancelled', `wp_c84s672ma8_wc_order_stats`.`status`))))))as Status ,(((SELECT meta_value FROM baahstore.wp_c84s672ma8_postmeta where post_id=`wp_c84s672ma8_wc_order_stats`.`order_id` and meta_key = '_alg_wc_cog_order_profit') + (SELECT meta_value FROM baahstore.wp_c84s672ma8_postmeta where  post_id=`wp_c84s672ma8_wc_order_stats`.`order_id` and meta_key = '_order_shipping')) -  (SELECT meta_value FROM baahstore.wp_c84s672ma8_postmeta where post_id=`wp_c84s672ma8_wc_order_stats`.`order_id` and meta_key = '_wc_cost_of_shipping')) as Profit from `wp_c84s672ma8_wc_order_stats` where cast(`wp_c84s672ma8_wc_order_stats`.`date_created` as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) order by order_id desc;");
+            var list = dapper.Con().Query<Profit>("select `wp_c84s672ma8_wc_order_stats`.`order_id` as `OrderId`,`wp_c84s672ma8_wc_order_stats`.`date_created` AS `Date`,`wp_c84s672ma8_wc_order_stats`.`num_items_sold` AS `ItemsSold`,`wp_c84s672ma8_wc_order_stats`.`total_sales` AS `TotalSale`,IF(`wp_c84s672ma8_wc_order_stats`.`status`= 'wc-pending', 'Pending', IF(`wp_c84s672ma8_wc_order_stats`.`status`= 'wc-processing', 'Processing', IF(`wp_c84s672ma8_wc_order_stats`.`status`= 'wc-completed', 'Completed', IF(`wp_c84s672ma8_wc_order_stats`.`status`= 'wc-refunded', 'Refunded', IF(`wp_c84s672ma8_wc_order_stats`.`status`= 'wc-trash', 'Trash', IF(`wp_c84s672ma8_wc_order_stats`.`status`= 'wc-cancelled', 'Cancelled', `wp_c84s672ma8_wc_order_stats`.`status`))))))as Status ,(((SELECT meta_value FROM baahstore.wp_c84s672ma8_postmeta where post_id=`wp_c84s672ma8_wc_order_stats`.`order_id` and meta_key = '_alg_wc_cog_order_profit') + (SELECT meta_value FROM baahstore.wp_c84s672ma8_postmeta where  post_id=`wp_c84s672ma8_wc_order_stats`.`order_id` and meta_key = '_order_shipping')) -  (SELECT meta_value FROM baahstore.wp_c84s672ma8_postmeta where post_id=`wp_c84s672ma8_wc_order_stats`.`order_id` and meta_key = '_wc_cost_of_shipping')) as Profit from `wp_c84s672ma8_wc_order_stats` where cast(`wp_c84s672ma8_wc_order_stats`.`date_created` as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) order by order_id desc;");
 
 
 
             ViewBag.fDate = fDate;
             ViewBag.tDate = tDate;
-            ViewBag.List = list.Where(f => f.Profit != null).ToList();
+            ViewBag.List = list.Where(f => f.TotalProfit != null).ToList();
 
             return View();
         }
@@ -244,7 +244,7 @@ namespace BaahWebAPI.Controllers
         public IActionResult StockReport()
         {
             string query = "select @a:=@a+1 Serial,product_id as ProductId, (select post_title from baahstore.wp_c84s672ma8_posts where ID = product_id) as ProductName, stock_quantity as StockQty, stock_status as StockStatus from baahstore.wp_c84s672ma8_wc_product_meta_lookup, (SELECT @a:= 0) AS a where (select post_title from baahstore.wp_c84s672ma8_posts where ID = product_id) is not null order by ProductName";
-            var list = dapper.Con().Query<DpStock>(query);
+            var list = dapper.Con().Query<Stock>(query);
 
             ViewBag.List = list;
 
@@ -261,7 +261,7 @@ namespace BaahWebAPI.Controllers
             string tDate = DateTime.Now.ToString("yyyy-MM-dd");
 
             string query = "select `wp_c84s672ma8_wc_order_stats`.`order_id` as `OrderId`,`wp_c84s672ma8_wc_order_stats`.`date_created` AS `Date`,`wp_c84s672ma8_wc_order_stats`.`num_items_sold` AS `ItemsSold`,`wp_c84s672ma8_wc_order_stats`.`total_sales` AS `TotalSale`,IF(`wp_c84s672ma8_wc_order_stats`.`status`= 'wc-refunded', 'Refunded', 'Not Refunded') as Status from `wp_c84s672ma8_wc_order_stats` where `wp_c84s672ma8_wc_order_stats`.`status` = 'wc-refunded' and cast(`wp_c84s672ma8_wc_order_stats`.`date_created` as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) order by order_id desc;";
-            var list = dapper.Con().Query<DpSale>(query);
+            var list = dapper.Con().Query<DPSale>(query);
 
             ViewBag.fDate = null;
             ViewBag.tDate = null;
@@ -276,7 +276,7 @@ namespace BaahWebAPI.Controllers
             string fDate = FromDate.ToString("yyyy-MM-dd");
             string tDate = ToDate.ToString("yyyy-MM-dd");
 
-            var list = dapper.Con().Query<DpSale>("select `wp_c84s672ma8_wc_order_stats`.`order_id` as `OrderId`,`wp_c84s672ma8_wc_order_stats`.`date_created` AS `Date`,`wp_c84s672ma8_wc_order_stats`.`num_items_sold` AS `ItemsSold`,`wp_c84s672ma8_wc_order_stats`.`total_sales` AS `TotalSale`,IF(`wp_c84s672ma8_wc_order_stats`.`status`= 'wc-refunded', 'Refunded', 'Not Refunded') as Status from `wp_c84s672ma8_wc_order_stats` where `wp_c84s672ma8_wc_order_stats`.`status` = 'wc-refunded' and cast(`wp_c84s672ma8_wc_order_stats`.`date_created` as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) order by order_id desc;");
+            var list = dapper.Con().Query<DPSale>("select `wp_c84s672ma8_wc_order_stats`.`order_id` as `OrderId`,`wp_c84s672ma8_wc_order_stats`.`date_created` AS `Date`,`wp_c84s672ma8_wc_order_stats`.`num_items_sold` AS `ItemsSold`,`wp_c84s672ma8_wc_order_stats`.`total_sales` AS `TotalSale`,IF(`wp_c84s672ma8_wc_order_stats`.`status`= 'wc-refunded', 'Refunded', 'Not Refunded') as Status from `wp_c84s672ma8_wc_order_stats` where `wp_c84s672ma8_wc_order_stats`.`status` = 'wc-refunded' and cast(`wp_c84s672ma8_wc_order_stats`.`date_created` as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) order by order_id desc;");
 
 
 
@@ -297,7 +297,7 @@ namespace BaahWebAPI.Controllers
             string tDate = DateTime.Now.ToString("yyyy-MM-dd");
 
             string query = "SELECT id as Id, (SELECT meta_value FROM baahstore.wp_c84s672ma8_usermeta where user_id=(baahstore.wp_c84s672ma8_ac_abandoned_cart_history_lite.user_id) and meta_key = 'billing_email') as Email, user_type as Customer, DATE_FORMAT(FROM_UNIXTIME(`abandoned_cart_time`), '%Y-%m-%d %H:%i:%s') as AbandonedDate FROM baahstore.wp_c84s672ma8_ac_abandoned_cart_history_lite where cast(DATE_FORMAT(FROM_UNIXTIME(`abandoned_cart_time`), '%Y-%m-%d %H:%i:%s') as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date)";
-            var list = dapper.Con().Query<DpAbandonedCart>(query);
+            var list = dapper.Con().Query<AbandonedCart>(query);
 
             ViewBag.fDate = null;
             ViewBag.tDate = null;
@@ -312,7 +312,7 @@ namespace BaahWebAPI.Controllers
             string fDate = FromDate.ToString("yyyy-MM-dd");
             string tDate = ToDate.ToString("yyyy-MM-dd");
 
-            var list = dapper.Con().Query<DpAbandonedCart>("SELECT id as Id, (SELECT meta_value FROM baahstore.wp_c84s672ma8_usermeta where user_id=(baahstore.wp_c84s672ma8_ac_abandoned_cart_history_lite.user_id) and meta_key = 'billing_email') as Email, user_type as Customer, DATE_FORMAT(FROM_UNIXTIME(`abandoned_cart_time`), '%Y-%m-%d %H:%i:%s') as AbandonedDate FROM baahstore.wp_c84s672ma8_ac_abandoned_cart_history_lite where cast(DATE_FORMAT(FROM_UNIXTIME(`abandoned_cart_time`), '%Y-%m-%d %H:%i:%s') as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date)");
+            var list = dapper.Con().Query<AbandonedCart>("SELECT id as Id, (SELECT meta_value FROM baahstore.wp_c84s672ma8_usermeta where user_id=(baahstore.wp_c84s672ma8_ac_abandoned_cart_history_lite.user_id) and meta_key = 'billing_email') as Email, user_type as Customer, DATE_FORMAT(FROM_UNIXTIME(`abandoned_cart_time`), '%Y-%m-%d %H:%i:%s') as AbandonedDate FROM baahstore.wp_c84s672ma8_ac_abandoned_cart_history_lite where cast(DATE_FORMAT(FROM_UNIXTIME(`abandoned_cart_time`), '%Y-%m-%d %H:%i:%s') as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date)");
 
 
 

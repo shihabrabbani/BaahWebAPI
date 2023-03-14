@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace BaahWebAPI.Models
 {
-    public partial class ViewSalesreport
+    public partial class Sale
     {
         public string Date { get; set; }
         public int ItemsSold { get; set; }
