@@ -88,7 +88,7 @@ namespace BaahWebAPI.Controllers
         public class Location
         {
             public string name { get; set; }
-            public string value { get; set; }
+            public int value { get; set; }
         }
     }
 
