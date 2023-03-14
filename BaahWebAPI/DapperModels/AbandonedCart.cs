@@ -1,6 +1,6 @@
 ﻿namespace BaahWebAPI.DapperModels
 {
-    public class DpAbandonedCart
+    public class AbandonedCart
     {
         public int Id { get; set; }
         public string Email { get; set; }
