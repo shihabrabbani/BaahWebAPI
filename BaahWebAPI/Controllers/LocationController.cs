@@ -23,7 +23,7 @@ namespace BaahWebAPI.Controllers
             string fDate = DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
             string tDate = DateTime.Now.ToString("yyyy-MM-dd");
 
-            string query = "Select distinct Location as label, Sum(ItemsSold) value from LocationWiseSale where cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) group by label order by Sum(TotalSale) desc";
+            string query = "SELECT distinct districtname as  'name', Sum(ItemsSold) as 'value' FROM baahstore.view_locationwisesale INNER JOIN zDistricts ON view_locationwisesale.Location = zDistricts.districtId where cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) group by districtname order by Sum(ItemsSold) desc";
             var locations = dapper.Con().Query<Location>(query).ToList();
 
             return locations;
@@ -55,10 +55,10 @@ namespace BaahWebAPI.Controllers
         [HttpGet("{FromDate}&{ToDate}")]
         public IEnumerable<Location> Get(string FromDate, string ToDate)
         {
-            string fDate = DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
-            string tDate = DateTime.Now.ToString("yyyy-MM-dd");
+            string fDate = FromDate;
+            string tDate = ToDate;
 
-            string query = "Select distinct Location as label, Sum(ItemsSold) value from LocationWiseSale where cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) group by label order by Sum(TotalSale) desc";
+            string query = "SELECT distinct districtname as  'name', Sum(ItemsSold) as 'value' FROM baahstore.view_locationwisesale INNER JOIN zDistricts ON view_locationwisesale.Location = zDistricts.districtId where cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) group by districtname order by Sum(ItemsSold) desc";
             var locations = dapper.Con().Query<Location>(query).ToList();
 
             return locations;
@@ -87,7 +87,7 @@ namespace BaahWebAPI.Controllers
         //}
         public class Location
         {
-            public string label { get; set; }
+            public string name { get; set; }
             public string value { get; set; }
         }
     }
