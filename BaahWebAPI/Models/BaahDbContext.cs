@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using BaahWebAPI.DapperModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Options;
@@ -20,7 +21,7 @@ namespace BaahWebAPI.Models
         //public virtual DbSet<NewView> NewViews { get; set; } = null!;
         public virtual DbSet<ViewProcessingorder> ViewProcessingorders { get; set; } = null!;
         public virtual DbSet<ViewTodayssale> ViewTodayssales { get; set; } = null!;
-        public virtual DbSet<ViewNetSalesreport> ViewNetSalesreports { get; set; } = null!;
+        public virtual DbSet<NetSale> ViewNetSalesreports { get; set; } = null!;
         public virtual DbSet<ViewSalesreport> ViewSalesreports { get; set; } = null!;
         public virtual DbSet<ViewTopSellingProducts> ViewTopSellingProducts { get; set; } = null!;
 
@@ -86,7 +87,7 @@ namespace BaahWebAPI.Models
                 entity.Property(e => e.Count).HasColumnType("bigint(21)");
             });
 
-            modelBuilder.Entity<ViewNetSalesreport>(entity =>
+            modelBuilder.Entity<NetSale>(entity =>
             {
                 entity.HasNoKey();
 
@@ -100,7 +101,7 @@ namespace BaahWebAPI.Models
                     .HasColumnType("int(11)")
                     .HasColumnName("Items Sold");
 
-                entity.Property(e => e.NetSale).HasColumnName("Net Sale");
+                entity.Property(e => e.NetSaleAmt).HasColumnName("Net Sale");
 
                 entity.Property(e => e.ShippingCost)
                     .HasColumnName("Shipping Cost")

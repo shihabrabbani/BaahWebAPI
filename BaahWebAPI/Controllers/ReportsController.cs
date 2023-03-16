@@ -30,7 +30,7 @@ namespace BaahWebAPI.Controllers
 
             var prod = dapper.Con().Query<DpProduct>("Select `wp_c84s672ma8_wc_product_meta_lookup`.`total_sales` AS `TotalSale`,`wp_c84s672ma8_posts`.`post_title` AS `ProductName` from (`wp_c84s672ma8_wc_product_meta_lookup`  join `wp_c84s672ma8_posts` on((`wp_c84s672ma8_wc_product_meta_lookup`.`product_id` = `wp_c84s672ma8_posts`.`ID`))) where `total_sales` > 0 and cast(post_date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) order by `wp_c84s672ma8_wc_product_meta_lookup`.`total_sales` desc limit 5");
 
-            var cat = dapper.Con().Query<DpCategory>("Select CategoryId, CategoryName, SUM(ProductSoldQty) as ItemsSold , SUM(ProductSoldAmount) as TotalAmount from View_OrderDetail where cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) group by CategoryId, CategoryName order by ItemsSold desc limit 3");
+            var cat = dapper.Con().Query<CategorywiseSale>("Select CategoryId, CategoryName, SUM(ProductSoldQty) as ItemsSold , SUM(ProductSoldAmount) as TotalAmount from View_OrderDetail where cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) group by CategoryId, CategoryName order by ItemsSold desc limit 3");
 
             ViewBag.fDate = fDate;
             ViewBag.tDate = tDate;
@@ -53,7 +53,7 @@ namespace BaahWebAPI.Controllers
 
             var prod = dapper.Con().Query<DpProduct>("Select `wp_c84s672ma8_wc_product_meta_lookup`.`total_sales` AS `TotalSale`,`wp_c84s672ma8_posts`.`post_title` AS `ProductName` from (`wp_c84s672ma8_wc_product_meta_lookup`  join `wp_c84s672ma8_posts` on((`wp_c84s672ma8_wc_product_meta_lookup`.`product_id` = `wp_c84s672ma8_posts`.`ID`))) where `total_sales` > 0 and cast(post_date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) order by `wp_c84s672ma8_wc_product_meta_lookup`.`total_sales` desc limit 5");
 
-            var cat = dapper.Con().Query<DpCategory>("Select CategoryId, CategoryName, SUM(ProductSoldQty) as ItemsSold , SUM(ProductSoldAmount) as TotalAmount from View_OrderDetail where cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) group by CategoryId, CategoryName order by ItemsSold desc limit 3");
+            var cat = dapper.Con().Query<CategorywiseSale>("Select CategoryId, CategoryName, SUM(ProductSoldQty) as ItemsSold , SUM(ProductSoldAmount) as TotalAmount from View_OrderDetail where cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) group by CategoryId, CategoryName order by ItemsSold desc limit 3");
 
             ViewBag.fDate = fDate;
             ViewBag.tDate = tDate;
@@ -73,7 +73,7 @@ namespace BaahWebAPI.Controllers
             string fDate = DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
             string tDate = DateTime.Now.ToString("yyyy-MM-dd");
 
-            var list = dapper.Con().Query<DpCategory>("select CategoryId, CategoryName, SUM(ProductSoldQty) as ItemsSold , SUM(ProductSoldAmount) as TotalAmount from View_OrderDetail where cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) group by CategoryId, CategoryName order by ItemsSold desc");
+            var list = dapper.Con().Query<CategorywiseSale>("select CategoryId, CategoryName, SUM(ProductSoldQty) as ItemsSold , SUM(ProductSoldAmount) as TotalAmount from View_OrderDetail where cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) group by CategoryId, CategoryName order by ItemsSold desc");
 
 
             //ViewBag.fDate = null;
@@ -92,7 +92,7 @@ namespace BaahWebAPI.Controllers
             string fDate = FromDate.ToString("yyyy-MM-dd");
             string tDate = ToDate.ToString("yyyy-MM-dd");
 
-            var list = dapper.Con().Query<DpCategory>("select CategoryId, CategoryName, SUM(ProductSoldQty) as ItemsSold , SUM(ProductSoldAmount) as TotalAmount from View_OrderDetail where cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) group by CategoryId, CategoryName order by ItemsSold desc");
+            var list = dapper.Con().Query<CategorywiseSale>("select CategoryId, CategoryName, SUM(ProductSoldQty) as ItemsSold , SUM(ProductSoldAmount) as TotalAmount from View_OrderDetail where cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) group by CategoryId, CategoryName order by ItemsSold desc");
 
 
             ViewBag.fDate = fDate;
@@ -113,7 +113,7 @@ namespace BaahWebAPI.Controllers
 
             string query = "select cast(Date as date) as Date,sum(TotalSale) as TotalSale from view_netsalesreport where cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) group by CAST(Date as Date)";
 
-            var list = dapper.Con().Query<ViewNetSalesreport>(query);
+            var list = dapper.Con().Query<NetSale>(query);
             //List<ViewNetSalesreport> net = db.ViewNetSalesreports.ToList();
             //List<ViewNetSalesreport> net = db.ViewNetSalesreports.Where(a => a.Date.Date >= DateTime.Now.Date.AddDays(-15) && a.Date.Date <= DateTime.Now.Date).ToList();
             ViewBag.netsalestlist = list;
@@ -128,7 +128,7 @@ namespace BaahWebAPI.Controllers
             string fDate = FromDate.ToString("yyyy-MM-dd");
             string tDate = ToDate.ToString("yyyy-MM-dd");
 
-            var list = dapper.Con().Query<ViewNetSalesreport>("select cast(Date as date) as Date,sum(TotalSale) as TotalSale from view_netsalesreport where cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) group by CAST(Date as Date)");
+            var list = dapper.Con().Query<NetSale>("select cast(Date as date) as Date,sum(TotalSale) as TotalSale from view_netsalesreport where cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) group by CAST(Date as Date)");
 
 
             ViewBag.fDate = fDate;
@@ -191,7 +191,7 @@ namespace BaahWebAPI.Controllers
 
 
             string query = "SELECT distinct districtname as  'name', Sum(ItemsSold) as 'value' FROM baahstore.view_locationwisesale INNER JOIN zDistricts ON view_locationwisesale.Location = zDistricts.districtId where cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) group by districtname order by Sum(ItemsSold) desc";
-            var listfull = dapper.Con().Query<DpLocationMin>(query).OrderByDescending(f => f.value);
+            var listfull = dapper.Con().Query<Location>(query).OrderByDescending(f => f.value);
             var list = listfull.Take(5).OrderByDescending(f => f.value);
 
             List<string> names = new List<string>();
@@ -219,7 +219,7 @@ namespace BaahWebAPI.Controllers
 
 
             string query = "SELECT distinct districtname as  'name', Sum(ItemsSold) as 'value' FROM baahstore.view_locationwisesale INNER JOIN zDistricts ON view_locationwisesale.Location = zDistricts.districtId where cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) group by districtname order by Sum(ItemsSold) desc";
-            var listfull = dapper.Con().Query<DpLocationMin>(query).OrderByDescending(f => f.value);
+            var listfull = dapper.Con().Query<Location>(query).OrderByDescending(f => f.value);
             var list = listfull.Take(5).OrderByDescending(f => f.value);
 
             List<string> names = new List<string>();
@@ -261,7 +261,7 @@ namespace BaahWebAPI.Controllers
             string tDate = DateTime.Now.ToString("yyyy-MM-dd");
 
             string query = "select `wp_c84s672ma8_wc_order_stats`.`order_id` as `OrderId`,`wp_c84s672ma8_wc_order_stats`.`date_created` AS `Date`,`wp_c84s672ma8_wc_order_stats`.`num_items_sold` AS `ItemsSold`,`wp_c84s672ma8_wc_order_stats`.`total_sales` AS `TotalSale`,IF(`wp_c84s672ma8_wc_order_stats`.`status`= 'wc-refunded', 'Refunded', 'Not Refunded') as Status from `wp_c84s672ma8_wc_order_stats` where `wp_c84s672ma8_wc_order_stats`.`status` = 'wc-refunded' and cast(`wp_c84s672ma8_wc_order_stats`.`date_created` as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) order by order_id desc;";
-            var list = dapper.Con().Query<DPSale>(query);
+            var list = dapper.Con().Query<Return>(query);
 
             ViewBag.fDate = null;
             ViewBag.tDate = null;
@@ -276,7 +276,7 @@ namespace BaahWebAPI.Controllers
             string fDate = FromDate.ToString("yyyy-MM-dd");
             string tDate = ToDate.ToString("yyyy-MM-dd");
 
-            var list = dapper.Con().Query<DPSale>("select `wp_c84s672ma8_wc_order_stats`.`order_id` as `OrderId`,`wp_c84s672ma8_wc_order_stats`.`date_created` AS `Date`,`wp_c84s672ma8_wc_order_stats`.`num_items_sold` AS `ItemsSold`,`wp_c84s672ma8_wc_order_stats`.`total_sales` AS `TotalSale`,IF(`wp_c84s672ma8_wc_order_stats`.`status`= 'wc-refunded', 'Refunded', 'Not Refunded') as Status from `wp_c84s672ma8_wc_order_stats` where `wp_c84s672ma8_wc_order_stats`.`status` = 'wc-refunded' and cast(`wp_c84s672ma8_wc_order_stats`.`date_created` as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) order by order_id desc;");
+            var list = dapper.Con().Query<Return>("select `wp_c84s672ma8_wc_order_stats`.`order_id` as `OrderId`,`wp_c84s672ma8_wc_order_stats`.`date_created` AS `Date`,`wp_c84s672ma8_wc_order_stats`.`num_items_sold` AS `ItemsSold`,`wp_c84s672ma8_wc_order_stats`.`total_sales` AS `TotalSale`,IF(`wp_c84s672ma8_wc_order_stats`.`status`= 'wc-refunded', 'Refunded', 'Not Refunded') as Status from `wp_c84s672ma8_wc_order_stats` where `wp_c84s672ma8_wc_order_stats`.`status` = 'wc-refunded' and cast(`wp_c84s672ma8_wc_order_stats`.`date_created` as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) order by order_id desc;");
 
 
 

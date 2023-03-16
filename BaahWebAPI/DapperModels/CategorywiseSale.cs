@@ -1,6 +1,6 @@
 ﻿namespace BaahWebAPI.DapperModels
 {
-    public class DpCategory
+    public class CategorywiseSale
     {
         public int CategoryId { get; set; }
         public string CategoryName { get; set; }

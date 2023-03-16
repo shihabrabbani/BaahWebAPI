@@ -1,6 +1,6 @@
 ﻿namespace BaahWebAPI.DapperModels
 {
-    public class DpLocationMin
+    public class Location
     {
         public string name { get; set; }
         public int value { get; set; }

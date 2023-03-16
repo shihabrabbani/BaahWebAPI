@@ -59,7 +59,7 @@ namespace BaahWebAPI.Controllers
             string fDate = DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
             string tDate = DateTime.Now.ToString("yyyy-MM-dd");
 
-            var list = dapper.Con().Query<DpCategory>("select CategoryId, CategoryName, SUM(ProductSoldQty) as ItemsSold , SUM(ProductSoldAmount) as TotalAmount from View_OrderDetail where cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) group by CategoryId, CategoryName order by ItemsSold desc");
+            var list = dapper.Con().Query<CategorywiseSale>("select CategoryId, CategoryName, SUM(ProductSoldQty) as ItemsSold , SUM(ProductSoldAmount) as TotalAmount from View_OrderDetail where cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) group by CategoryId, CategoryName order by ItemsSold desc");
 
 
             //ViewBag.fDate = null;
@@ -78,7 +78,7 @@ namespace BaahWebAPI.Controllers
             string fDate = FromDate.ToString("yyyy-MM-dd");
             string tDate = ToDate.ToString("yyyy-MM-dd");
 
-            var list = dapper.Con().Query<DpCategory>("select CategoryId, CategoryName, SUM(ProductSoldQty) as ItemsSold , SUM(ProductSoldAmount) as TotalAmount from View_OrderDetail where cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) group by CategoryId, CategoryName order by ItemsSold desc");
+            var list = dapper.Con().Query<CategorywiseSale>("select CategoryId, CategoryName, SUM(ProductSoldQty) as ItemsSold , SUM(ProductSoldAmount) as TotalAmount from View_OrderDetail where cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) group by CategoryId, CategoryName order by ItemsSold desc");
 
 
             ViewBag.fDate = fDate;
@@ -104,7 +104,7 @@ namespace BaahWebAPI.Controllers
             string tDate = DateTime.Now.ToString("yyyy-MM-dd");
 
             string query = "select `wp_c84s672ma8_wc_order_stats`.`order_id` as `OrderId`,`wp_c84s672ma8_wc_order_stats`.`date_created` AS `Date`,`wp_c84s672ma8_wc_order_stats`.`num_items_sold` AS `ItemsSold`,`wp_c84s672ma8_wc_order_stats`.`total_sales` AS `TotalSale`,IF(`wp_c84s672ma8_wc_order_stats`.`status`= 'wc-refunded', 'Refunded', 'Not Refunded') as Status from `wp_c84s672ma8_wc_order_stats` where `wp_c84s672ma8_wc_order_stats`.`status` = 'wc-refunded' and cast(`wp_c84s672ma8_wc_order_stats`.`date_created` as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) order by order_id desc;";
-            var list = dapper.Con().Query<DPSale>(query);
+            var list = dapper.Con().Query<Return>(query);
 
             ViewBag.fDate = null;
             ViewBag.tDate = null;
@@ -119,7 +119,7 @@ namespace BaahWebAPI.Controllers
             string fDate = FromDate.ToString("yyyy-MM-dd");
             string tDate = ToDate.ToString("yyyy-MM-dd");
 
-            var list = dapper.Con().Query<DPSale>("select `wp_c84s672ma8_wc_order_stats`.`order_id` as `OrderId`,`wp_c84s672ma8_wc_order_stats`.`date_created` AS `Date`,`wp_c84s672ma8_wc_order_stats`.`num_items_sold` AS `ItemsSold`,`wp_c84s672ma8_wc_order_stats`.`total_sales` AS `TotalSale`,IF(`wp_c84s672ma8_wc_order_stats`.`status`= 'wc-refunded', 'Refunded', 'Not Refunded') as Status from `wp_c84s672ma8_wc_order_stats` where `wp_c84s672ma8_wc_order_stats`.`status` = 'wc-refunded' and cast(`wp_c84s672ma8_wc_order_stats`.`date_created` as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) order by order_id desc;");
+            var list = dapper.Con().Query<Return>("select `wp_c84s672ma8_wc_order_stats`.`order_id` as `OrderId`,`wp_c84s672ma8_wc_order_stats`.`date_created` AS `Date`,`wp_c84s672ma8_wc_order_stats`.`num_items_sold` AS `ItemsSold`,`wp_c84s672ma8_wc_order_stats`.`total_sales` AS `TotalSale`,IF(`wp_c84s672ma8_wc_order_stats`.`status`= 'wc-refunded', 'Refunded', 'Not Refunded') as Status from `wp_c84s672ma8_wc_order_stats` where `wp_c84s672ma8_wc_order_stats`.`status` = 'wc-refunded' and cast(`wp_c84s672ma8_wc_order_stats`.`date_created` as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) order by order_id desc;");
 
 
 

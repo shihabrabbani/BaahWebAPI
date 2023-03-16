@@ -26,7 +26,7 @@ namespace BaahWebAPI.Controllers
             string fDate = DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
             string tDate = DateTime.Now.ToString("yyyy-MM-dd");
 
-            string query = "select DATE_FORMAT(`date`,'%d/%m/%Y') as Date,sum(TotalSale) as TotalSale from view_salesreport where cast(`date` as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) group by `date`";
+            string query = "select DATE_FORMAT(cast(Date as date),'%d/%m/%Y') as Date,sum(TotalSale) as TotalSale from view_salesreport where cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) group by CAST(Date as Date)";
             var list = dapper.Con().Query<Sale>(query).ToList();
 
             return list;
@@ -38,7 +38,7 @@ namespace BaahWebAPI.Controllers
         {
             string fDate = FromDate;
             string tDate = ToDate;
-            string query = "select DATE_FORMAT(`date`,'%d/%m/%Y') as Date,sum(TotalSale) as TotalSale from view_salesreport where cast(`date` as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) group by `date`";
+            string query = "select DATE_FORMAT(cast(Date as date),'%d/%m/%Y') as Date,sum(TotalSale) as TotalSale from view_salesreport where cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) group by CAST(Date as Date)";
             var list = dapper.Con().Query<Sale>(query).ToList();
 
             return list;

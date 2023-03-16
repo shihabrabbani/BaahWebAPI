@@ -1,4 +1,4 @@
-﻿namespace BaahWebAPI.DapperModels
+﻿namespace BaahWebAPI.Models
 {
     public class DpProduct
     {

@@ -1,5 +1,4 @@
-﻿using BaahWebAPI.Models;
-namespace BaahWebAPI.ViewModel
+﻿namespace BaahWebAPI.Models
 {
     public class DashboardViewModel
     {
