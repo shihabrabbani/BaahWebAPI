@@ -9,12 +9,12 @@ namespace BaahWebAPI.Controllers
     [Route("[controller]")]
     public class SaleController:ControllerBase
     {
-        private readonly ILogger<ProfitController> _logger;
+        private readonly ILogger<AOVController> _logger;
         clsDapper dapper = new clsDapper();
         //----Demo----//
         //var aaa = dapper.Con().Query<ViewSalesreport>("select * from view_salesreport");
 
-        public SaleController(ILogger<ProfitController> logger)
+        public SaleController(ILogger<AOVController> logger)
         {
             _logger = logger;
         }
