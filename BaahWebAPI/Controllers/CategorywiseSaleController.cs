@@ -40,5 +40,23 @@ namespace BaahWebAPI.Controllers
 
             return list;
         }
+
+        [HttpGet("CategorywisePerfomance/{id}&{FromDate}&{ToDate}")]
+        public CategorywisePerfomance CategorywisePerfomance(int id, string FromDate, string ToDate)
+        {
+            string fDate = FromDate;
+            string tDate = ToDate;
+
+            string query = "select CategoryId, CategoryName, SUM(ProductSoldQty) as ItemsSold , SUM(ProductSoldAmount) as TotalAmount from View_OrderDetail where cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) group by CategoryId, CategoryName order by ItemsSold desc";
+            var item = dapper.Con().Query<CategorywisePerfomance>(query).FirstOrDefault();
+            item.AverageOrderValue = (Convert.ToDecimal(item.TotalAmount) / Convert.ToInt32(item.ItemsSold)).ToString();
+
+
+            string query2 = "SELECT ProductName, ProductSoldAmount AS totalSale FROM View_OrderDetail  WHERE View_OrderDetail.Status = 'wc-completed' AND  cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) AND CategoryId = '" + id + "' ORDER BY ProductSoldAmount DESC LIMIT 5";
+            var list = dapper.Con().Query<TopSellingProduct>(query2).ToList();
+            item.TopSellingProducts = list;
+
+            return item;
+        }
     }
 }
