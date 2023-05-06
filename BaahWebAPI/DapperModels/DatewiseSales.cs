@@ -5,7 +5,7 @@ namespace BaahWebAPI.Models
 {
     public partial class DatewiseSales
     {
-        public string Date { get; set; }
+        public string DateString { get; set; }
         public double TotalSale { get; set; }
     }
 }

@@ -52,8 +52,26 @@ namespace BaahWebAPI.Controllers
             var item = dapper.Con().Query<CategorywisePerfomance>(query).FirstOrDefault();
             item.AverageOrderValue = (Convert.ToDecimal(item.TotalAmount) / Convert.ToInt32(item.ItemsSold)).ToString();
 
+            DateTime from = DateTime.ParseExact(fDate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
+            DateTime to = DateTime.ParseExact(tDate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
+            TimeSpan timeDifference = to - from;
+            double daysDifference = timeDifference.TotalDays;
 
-            string query2 = "SELECT CAST(DATE AS DATE) AS DATE, SUM(ProductSoldAmount) AS TotalSale FROM View_OrderDetail  WHERE View_OrderDetail.Status = 'wc-completed' AND  cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) AND CategoryId = '" + id + "' GROUP BY ProductSoldAmount DESC LIMIT 5";
+            string query2 = "";
+            if (daysDifference < 32)
+            {
+                query2 = "SELECT CAST(DATE AS DATE) AS DateString, SUM(ProductSoldAmount) AS TotalSale FROM View_OrderDetail  WHERE View_OrderDetail.Status = 'wc-completed' AND  cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) AND CategoryId = '" + id + "' GROUP BY ProductSoldAmount";
+            }
+            else if(daysDifference > 31 && daysDifference < 366)
+            {
+                query2 = "SELECT MONTHNAME(`DATE`) AS DateString, SUM(ProductSoldAmount) AS TotalSale FROM View_OrderDetail  WHERE View_OrderDetail.Status = 'wc-completed' AND  cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) AND CategoryId = '" + id + "' GROUP BY DateString ORDER BY MONTH(`DATE`)";
+            }
+            else if(daysDifference > 365)
+            {
+                query2 = "SELECT YEAR(`DATE`) AS DateString, SUM(ProductSoldAmount) AS TotalSale FROM View_OrderDetail  WHERE View_OrderDetail.Status = 'wc-completed' AND  cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) AND CategoryId = '" + id + "' GROUP BY DateString";
+            }
+
+            
             var datewiseSales = dapper.Con().Query<DatewiseSales>(query2).ToList();
             item.DatewiseSales = datewiseSales;
 
