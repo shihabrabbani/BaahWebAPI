@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Dapper;
 using BaahWebAPI.DapperModels;
+using BaahWebAPI.Models;
 
 namespace BaahWebAPI.Controllers
 {
@@ -52,8 +53,13 @@ namespace BaahWebAPI.Controllers
             item.AverageOrderValue = (Convert.ToDecimal(item.TotalAmount) / Convert.ToInt32(item.ItemsSold)).ToString();
 
 
-            string query2 = "SELECT ProductName, ProductSoldAmount AS totalSale FROM View_OrderDetail  WHERE View_OrderDetail.Status = 'wc-completed' AND  cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) AND CategoryId = '" + id + "' ORDER BY ProductSoldAmount DESC LIMIT 5";
-            var list = dapper.Con().Query<TopSellingProduct>(query2).ToList();
+            string query2 = "SELECT CAST(DATE AS DATE) AS DATE, SUM(ProductSoldAmount) AS TotalSale FROM View_OrderDetail  WHERE View_OrderDetail.Status = 'wc-completed' AND  cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) AND CategoryId = '" + id + "' GROUP BY ProductSoldAmount DESC LIMIT 5";
+            var datewiseSales = dapper.Con().Query<DatewiseSales>(query2).ToList();
+            item.DatewiseSales = datewiseSales;
+
+
+            string query3 = "SELECT ProductName, ProductSoldAmount AS totalSale FROM View_OrderDetail  WHERE View_OrderDetail.Status = 'wc-completed' AND  cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) AND CategoryId = '" + id + "' ORDER BY ProductSoldAmount DESC LIMIT 5";
+            var list = dapper.Con().Query<TopSellingProduct>(query3).ToList();
             item.TopSellingProducts = list;
 
             return item;

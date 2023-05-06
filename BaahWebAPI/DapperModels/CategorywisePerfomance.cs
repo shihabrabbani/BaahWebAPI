@@ -1,4 +1,6 @@
-﻿namespace BaahWebAPI.DapperModels
+﻿using BaahWebAPI.Models;
+
+namespace BaahWebAPI.DapperModels
 {
     public class CategorywisePerfomance
     {
@@ -7,6 +9,7 @@
         public string ItemsSold { get; set; }
         public string TotalAmount { get; set; }
         public string AverageOrderValue { get; set; }
+        public List<DatewiseSales> DatewiseSales { get; set; }
         public List<TopSellingProduct> TopSellingProducts { get; set; }
     }
 }
