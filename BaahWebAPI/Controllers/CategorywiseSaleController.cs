@@ -48,7 +48,7 @@ namespace BaahWebAPI.Controllers
             string fDate = FromDate;
             string tDate = ToDate;
 
-            string query = "select CategoryId, CategoryName, SUM(ProductSoldQty) as ItemsSold , SUM(ProductSoldAmount) as TotalAmount from View_OrderDetail where cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) group by CategoryId, CategoryName order by ItemsSold desc";
+            string query = "select CategoryId, CategoryName, SUM(ProductSoldQty) as ItemsSold , SUM(ProductSoldAmount) as TotalAmount from View_OrderDetail where cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) and categoryid = '" + id + "' group by CategoryId, CategoryName order by ItemsSold desc";
             var item = dapper.Con().Query<CategorywisePerfomance>(query).FirstOrDefault();
             item.AverageOrderValue = (Convert.ToDecimal(item.TotalAmount) / Convert.ToInt32(item.ItemsSold)).ToString();
 

@@ -11,5 +11,6 @@ namespace BaahWebAPI.DapperModels
         public decimal TotalUnitSold { get; set; }
         public decimal ReturnRate { get; set; }
         public List<Sale> Trend { get; set; }
+        public List<CategorywiseSale> CategorywiseSales { get; set; }
     }
 }
