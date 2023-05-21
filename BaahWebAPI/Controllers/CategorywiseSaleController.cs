@@ -60,7 +60,7 @@ namespace BaahWebAPI.Controllers
             string query2 = "";
             if (daysDifference < 32)
             {
-                query2 = "SELECT CAST(DATE AS DATE) AS DateString, SUM(ProductSoldAmount) AS TotalSale FROM View_OrderDetail  WHERE View_OrderDetail.Status = 'wc-completed' AND  cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) AND CategoryId = '" + id + "' GROUP BY ProductSoldAmount";
+                query2 = "SELECT CAST(DATE AS DATE) AS DateString, SUM(ProductSoldAmount) AS TotalSale FROM View_OrderDetail  WHERE View_OrderDetail.Status = 'wc-completed' AND  cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) AND CategoryId = '" + id + "' GROUP BY DateString";
             }
             else if(daysDifference > 31 && daysDifference < 366)
             {
