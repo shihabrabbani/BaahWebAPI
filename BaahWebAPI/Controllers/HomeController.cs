@@ -30,14 +30,11 @@ namespace BaahWebAPI.Controllers
 
             modelHome model = new modelHome();
 
-            string fDateM = utility.GetDateString(1, "dd MMM, yyyy");
-            string tDateM = utility.GetDateString(2, "dd MMM, yyyy");
+            string fDateM = utility.GetDateString(1, "yyyy-MM-dd");
+            string tDateM = utility.GetDateString(2, "yyyy-MM-dd");
 
             string query1 = "SELECT SUM(TotalSale) FROM view_salesreport WHERE CAST(DATE AS DATE) Between Cast('" + fDateM + "' as Date) and Cast('" + tDateM + "' as Date)";
             model.LastMonthSale = dapper.Con().Query<decimal>(query1).FirstOrDefault();
-
-            //string query2 = "SELECT SUM(TotalSale) FROM view_salesreport WHERE CAST(DATE AS DATE) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date)";
-            //model.LastMonthSale = dapper.Con().Query<decimal>(query2).FirstOrDefault();
 
 
 
