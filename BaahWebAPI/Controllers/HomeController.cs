@@ -36,6 +36,9 @@ namespace BaahWebAPI.Controllers
             string query1 = "SELECT SUM(TotalSale) FROM view_salesreport WHERE CAST(DATE AS DATE) Between Cast('" + fDateM + "' as Date) and Cast('" + tDateM + "' as Date)";
             model.LastMonthSale = dapper.Con().Query<decimal>(query1).FirstOrDefault();
 
+            string query4 = "SELECT SUM(ItemsSold) FROM view_salesreport WHERE CAST(DATE AS DATE) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date)";
+            model.TotalUnitSold = dapper.Con().Query<decimal>(query4).FirstOrDefault();
+
 
 
 
