@@ -60,15 +60,18 @@ namespace BaahWebAPI.Controllers
             string query2 = "";
             if (daysDifference < 32)
             {
-                query2 = "SELECT CAST(DATE AS DATE) AS DateString, SUM(ProductSoldAmount) AS TotalSale FROM View_OrderDetail  WHERE View_OrderDetail.Status = 'wc-completed' AND  cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) AND CategoryId = '" + id + "' GROUP BY DateString";
+                //WHERE View_OrderDetail.Status = 'wc-completed' AND
+                query2 = "SELECT CAST(DATE AS DATE) AS DateString, SUM(ProductSoldAmount) AS TotalSale FROM View_OrderDetail WHERE cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) AND CategoryId = '" + id + "' GROUP BY DateString";
             }
             else if(daysDifference > 31 && daysDifference < 366)
             {
-                query2 = "SELECT CONCAT(SUBSTRING(MONTHNAME(`DATE`), 1, 3), '-', RIGHT(YEAR(`DATE`), 2)) AS DateString, SUM(ProductSoldAmount) AS TotalSale FROM View_OrderDetail  WHERE View_OrderDetail.Status = 'wc-completed' AND  cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) AND CategoryId = '" + id + "' GROUP BY DateString ORDER BY YEAR(`DATE`), MONTH(`DATE`)";
+                //WHERE View_OrderDetail.Status = 'wc-completed' AND
+                query2 = "SELECT CONCAT(SUBSTRING(MONTHNAME(`DATE`), 1, 3), '-', RIGHT(YEAR(`DATE`), 2)) AS DateString, SUM(ProductSoldAmount) AS TotalSale FROM View_OrderDetail  WHERE cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) AND CategoryId = '" + id + "' GROUP BY DateString ORDER BY YEAR(`DATE`), MONTH(`DATE`)";
             }
             else if(daysDifference > 365)
             {
-                query2 = "SELECT YEAR(`DATE`) AS DateString, SUM(ProductSoldAmount) AS TotalSale FROM View_OrderDetail  WHERE View_OrderDetail.Status = 'wc-completed' AND  cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) AND CategoryId = '" + id + "' GROUP BY DateString";
+                //WHERE View_OrderDetail.Status = 'wc-completed' AND
+                query2 = "SELECT YEAR(`DATE`) AS DateString, SUM(ProductSoldAmount) AS TotalSale FROM View_OrderDetail  WHERE cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) AND CategoryId = '" + id + "' GROUP BY DateString";
             }
 
             
@@ -76,7 +79,8 @@ namespace BaahWebAPI.Controllers
             item.DatewiseSales = datewiseSales;
 
 
-            string query3 = "SELECT ProductName, ProductSoldAmount AS totalSale FROM View_OrderDetail  WHERE View_OrderDetail.Status = 'wc-completed' AND  cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) AND CategoryId = '" + id + "' ORDER BY ProductSoldAmount DESC LIMIT 5";
+            //WHERE View_OrderDetail.Status = 'wc-completed' AND
+            string query3 = "SELECT ProductName, ProductSoldAmount AS totalSale FROM View_OrderDetail  WHERE cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) AND CategoryId = '" + id + "' ORDER BY ProductSoldAmount DESC LIMIT 5";
             var list = dapper.Con().Query<TopSellingProduct>(query3).ToList();
             item.TopSellingProducts = list;
 
