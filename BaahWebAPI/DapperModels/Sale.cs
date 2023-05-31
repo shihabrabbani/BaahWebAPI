@@ -5,6 +5,7 @@ namespace BaahWebAPI.DapperModels
 {
     public partial class Sale
     { 
+        public string DateString { get; set; }
         public string Date { get; set; }
         public int ItemsSold { get; set; }
         public double TotalSale { get; set; }
