@@ -6,9 +6,9 @@ namespace BaahWebAPI.DapperModels
     {
         public int CategoryId { get; set; }
         public string CategoryName { get; set; }
-        public string ItemsSold { get; set; }
-        public string TotalAmount { get; set; }
-        public string AverageOrderValue { get; set; }
+        public int ItemsSold { get; set; }  // Updated data type to int
+        public decimal TotalAmount { get; set; }  // Updated data type to decimal
+        public decimal AverageOrderValue { get; set; }  // Updated data type to decimal
         public List<DatewiseSales> DatewiseSales { get; set; }
         public List<TopSellingProduct> TopSellingProducts { get; set; }
     }

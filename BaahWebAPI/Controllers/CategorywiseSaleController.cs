@@ -48,11 +48,15 @@ namespace BaahWebAPI.Controllers
             string fDate = FromDate;
             string tDate = ToDate;
 
+            CategorywisePerfomance item = new CategorywisePerfomance();
+            List<DatewiseSales> datewiseSales = new List<DatewiseSales>();
+            List<TopSellingProduct> topsellingproducts = new List<TopSellingProduct>();
+
             string query = "select CategoryId, CategoryName, SUM(ProductSoldQty) as ItemsSold , SUM(ProductSoldAmount) as TotalAmount from View_OrderDetail where cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) and categoryid = '" + id + "' group by CategoryId, CategoryName order by ItemsSold desc";
-            var item = dapper.Con().Query<CategorywisePerfomance>(query).FirstOrDefault();
+            item = dapper.Con().Query<CategorywisePerfomance>(query).FirstOrDefault();
             if (item != null)
             {
-                item.AverageOrderValue = (Convert.ToDecimal(item.TotalAmount) / Convert.ToInt32(item.ItemsSold)).ToString();
+                item.AverageOrderValue = Convert.ToDecimal(item.TotalAmount) / Convert.ToInt32(item.ItemsSold);
 
                 DateTime from = DateTime.ParseExact(fDate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
                 DateTime to = DateTime.ParseExact(tDate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
@@ -77,19 +81,30 @@ namespace BaahWebAPI.Controllers
                 }
 
 
-                var datewiseSales = dapper.Con().Query<DatewiseSales>(query2).ToList();
+                datewiseSales = dapper.Con().Query<DatewiseSales>(query2).ToList();
                 item.DatewiseSales = datewiseSales;
 
 
                 //WHERE View_OrderDetail.Status = 'wc-completed' AND
                 string query3 = "SELECT ProductName, ProductSoldAmount AS totalSale FROM View_OrderDetail  WHERE cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) AND CategoryId = '" + id + "' ORDER BY ProductSoldAmount DESC LIMIT 5";
-                var list = dapper.Con().Query<TopSellingProduct>(query3).ToList();
-                item.TopSellingProducts = list;
+                topsellingproducts = dapper.Con().Query<TopSellingProduct>(query3).ToList();
+                item.TopSellingProducts = topsellingproducts;
                 return item;
             }
             else
             {
-                return new CategorywisePerfomance();
+                CategorywisePerfomance item2 = new CategorywisePerfomance()
+                {
+                    CategoryId = 0,
+                    CategoryName = null,
+                    ItemsSold = 0,
+                    TotalAmount = 0m,
+                    AverageOrderValue = 0m,
+                    DatewiseSales = new List<DatewiseSales>(),
+                    TopSellingProducts = new List<TopSellingProduct>()
+                };
+                return item2;
+
             }
 
         }
