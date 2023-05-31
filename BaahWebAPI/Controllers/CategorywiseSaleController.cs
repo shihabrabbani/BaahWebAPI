@@ -64,7 +64,7 @@ namespace BaahWebAPI.Controllers
             }
             else if(daysDifference > 31 && daysDifference < 366)
             {
-                query2 = "SELECT MONTHNAME(`DATE`) AS DateString, SUM(ProductSoldAmount) AS TotalSale FROM View_OrderDetail  WHERE View_OrderDetail.Status = 'wc-completed' AND  cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) AND CategoryId = '" + id + "' GROUP BY DateString ORDER BY MONTH(`DATE`)";
+                query2 = "SELECT CONCAT(SUBSTRING(MONTHNAME(`DATE`), 1, 3), '-', RIGHT(YEAR(`DATE`), 2)) AS DateString, SUM(ProductSoldAmount) AS TotalSale FROM View_OrderDetail  WHERE View_OrderDetail.Status = 'wc-completed' AND  cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) AND CategoryId = '" + id + "' GROUP BY DateString ORDER BY YEAR(`DATE`), MONTH(`DATE`)";
             }
             else if(daysDifference > 365)
             {
