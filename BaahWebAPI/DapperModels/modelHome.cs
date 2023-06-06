@@ -7,7 +7,7 @@ namespace BaahWebAPI.DapperModels
     {
         public decimal LastMonthSale { get; set; }
         public decimal GrossSale { get; set; }
-        public decimal UniqueShopper { get; set; }
+        public int UniqueShopper { get; set; }
         public decimal TotalUnitSold { get; set; }
         public decimal ReturnRate { get; set; }
         public List<Sale> Trend { get; set; }
