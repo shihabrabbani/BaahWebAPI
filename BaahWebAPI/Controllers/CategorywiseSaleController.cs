@@ -2,6 +2,8 @@
 using Dapper;
 using BaahWebAPI.DapperModels;
 using BaahWebAPI.Models;
+using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace BaahWebAPI.Controllers
 {
@@ -25,6 +27,10 @@ namespace BaahWebAPI.Controllers
 
             string query = "select CategoryId, CategoryName, SUM(ProductSoldQty) as ItemsSold , SUM(ProductSoldAmount) as TotalAmount from View_OrderDetail where cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) group by CategoryId, CategoryName order by ItemsSold desc";
             var list = dapper.Con().Query<CategorywiseSale>(query).ToList();
+            foreach (var cat in list)
+            {
+                cat.CategoryName = cat.CategoryName.Replace("amp;", "");
+            }
 
             return list;
         }
@@ -38,6 +44,10 @@ namespace BaahWebAPI.Controllers
 
             string query = "select CategoryId, CategoryName, SUM(ProductSoldQty) as ItemsSold , SUM(ProductSoldAmount) as TotalAmount from View_OrderDetail where cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) group by CategoryId, CategoryName order by ItemsSold desc";
             var list = dapper.Con().Query<CategorywiseSale>(query).ToList();
+            foreach (var cat in list)
+            {
+                cat.CategoryName = cat.CategoryName.Replace("amp;", "");
+            }
 
             return list;
         }
@@ -56,6 +66,7 @@ namespace BaahWebAPI.Controllers
             item = dapper.Con().Query<CategorywisePerfomance>(query).FirstOrDefault();
             if (item != null)
             {
+                item.CategoryName = item.CategoryName.Replace("amp;", "");
                 item.AverageOrderValue = Convert.ToDecimal(item.TotalAmount) / Convert.ToInt32(item.ItemsSold);
 
                 DateTime from = DateTime.ParseExact(fDate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);

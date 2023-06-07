@@ -27,6 +27,10 @@ namespace BaahWebAPI.Controllers
 
             string query = "SELECT a.CategoryName, SUM(stock_quantity) AS StockQty FROM		(SELECT 	DISTINCT wp_c84s672ma8_wc_product_meta_lookup.product_id,	View_OrderDetail.CategoryId,	View_OrderDetail.CategoryName,	wp_c84s672ma8_wc_product_meta_lookup.stock_quantity,	wp_c84s672ma8_wc_product_meta_lookup.stock_status		FROM wp_c84s672ma8_wc_product_meta_lookup INNER JOIN	View_OrderDetail ON wp_c84s672ma8_wc_product_meta_lookup.product_id = View_OrderDetail.ProductId) a		GROUP BY a.CategoryName		ORDER BY StockQty";
             var list = dapper.Con().Query<Stock>(query).ToList();
+            foreach (var cat in list)
+            {
+                cat.CategoryName = cat.CategoryName.Replace("amp;", "");
+            }
 
             return list;
         }

@@ -82,6 +82,11 @@ namespace BaahWebAPI.Controllers
 
             string query7 = "select CategoryId, CategoryName, SUM(ProductSoldQty) as ItemsSold , SUM(ProductSoldAmount) as TotalAmount from View_OrderDetail where cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) group by CategoryId, CategoryName order by ItemsSold desc";
             var catlist = dapper.Con().Query<CategorywiseSale>(query7).ToList();
+            foreach(var cat in catlist)
+            {
+                cat.CategoryName = cat.CategoryName.Replace("amp;", "");
+            }
+
             model.CategorywiseSales = catlist;
 
             return model;
