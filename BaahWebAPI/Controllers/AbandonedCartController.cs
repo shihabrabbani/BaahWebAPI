@@ -23,7 +23,7 @@ namespace BaahWebAPI.Controllers
             string fDate = DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
             string tDate = DateTime.Now.ToString("yyyy-MM-dd");
 
-            string query = "SELECT DATE_FORMAT(FROM_UNIXTIME(`abandoned_cart_time`), '%Y-%m-%d') AS `DateString`, COUNT(id) AS `TotalAbandonedCarts` FROM baahstore.wp_c84s672ma8_ac_abandoned_cart_history_lite WHERE CAST(DATE_FORMAT(FROM_UNIXTIME(`abandoned_cart_time`), '%Y-%m-%d') AS DATE) BETWEEN CAST('" + fDate + "' AS DATE) AND CAST('" + tDate + "' AS DATE) 	GROUP BY DateString ORDER BY DateString";
+            string query = "SELECT DATE_FORMAT(FROM_UNIXTIME(`abandoned_cart_time`), '%d/%m/%Y') AS `DateString`, COUNT(id) AS `TotalAbandonedCarts` FROM baahstore.wp_c84s672ma8_ac_abandoned_cart_history_lite WHERE CAST(DATE_FORMAT(FROM_UNIXTIME(`abandoned_cart_time`), '%Y-%m-%d') AS DATE) BETWEEN CAST('" + fDate + "' AS DATE) AND CAST('" + tDate + "' AS DATE) 	GROUP BY DateString ORDER BY DateString";
             var list = dapper.Con().Query<AbandonedCart>(query).ToList();
 
             return list;
@@ -48,7 +48,7 @@ namespace BaahWebAPI.Controllers
             string query = "";
             if (daysDifference < 32)
             {
-                query = "SELECT DATE_FORMAT(FROM_UNIXTIME(`abandoned_cart_time`), '%Y-%m-%d') AS `DateString`, COUNT(id) AS `TotalAbandonedCarts` FROM baahstore.wp_c84s672ma8_ac_abandoned_cart_history_lite WHERE CAST(DATE_FORMAT(FROM_UNIXTIME(`abandoned_cart_time`), '%Y-%m-%d') AS DATE) BETWEEN CAST('" + fDate + "' AS DATE) AND CAST('" + tDate + "' AS DATE) 	GROUP BY DateString ORDER BY DateString";
+                query = "SELECT DATE_FORMAT(FROM_UNIXTIME(`abandoned_cart_time`), '%d/%m/%Y') AS `DateString`, COUNT(id) AS `TotalAbandonedCarts` FROM baahstore.wp_c84s672ma8_ac_abandoned_cart_history_lite WHERE CAST(DATE_FORMAT(FROM_UNIXTIME(`abandoned_cart_time`), '%Y-%m-%d') AS DATE) BETWEEN CAST('" + fDate + "' AS DATE) AND CAST('" + tDate + "' AS DATE) 	GROUP BY DateString ORDER BY DateString";
             }
             else if (daysDifference > 31 && daysDifference < 366)
             {
