@@ -28,6 +28,12 @@ namespace BaahWebAPI.Controllers
 
             string query = "Select CategoryId, CategoryName, SUM(ProductSoldQty) as ItemsSold , SUM(ProductSoldAmount) as TotalAmount from View_OrderDetail where cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) group by CategoryId, CategoryName order by ItemsSold desc limit 3";
             var list = dapper.Con().Query<TopSellingCategory>(query).ToList();
+            foreach (var cat in list)
+            {
+                cat.CategoryName = cat.CategoryName.Replace("amp;", "");
+            }
+            list.RemoveAll(cat => cat.CategoryName == "Our Hotties" || cat.CategoryName == "Trending");
+
 
             return list;
         }
@@ -40,6 +46,11 @@ namespace BaahWebAPI.Controllers
             string tDate = ToDate;
             string query = "Select CategoryId, CategoryName, SUM(ProductSoldQty) as ItemsSold , SUM(ProductSoldAmount) as TotalAmount from View_OrderDetail where cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) group by CategoryId, CategoryName order by ItemsSold desc limit 3";
             var list = dapper.Con().Query<TopSellingCategory>(query).ToList();
+            foreach (var cat in list)
+            {
+                cat.CategoryName = cat.CategoryName.Replace("amp;", "");
+            }
+            list.RemoveAll(cat => cat.CategoryName == "Our Hotties" || cat.CategoryName == "Trending");
 
             return list;
         }
