@@ -34,10 +34,10 @@ namespace BaahWebAPI.Controllers
             string tDateM = utility.GetDateString(2, "yyyy-MM-dd");
 
             string query1 = "SELECT SUM(TotalSale) FROM view_salesreport WHERE CAST(DATE AS DATE) Between Cast('" + fDateM + "' as Date) and Cast('" + tDateM + "' as Date)";
-            var LastMonthSale = dapper.Con().Query<decimal?>(query1).FirstOrDefault();
-            if(LastMonthSale != null)
+            var TotalSaleAmount = dapper.Con().Query<decimal?>(query1).FirstOrDefault();
+            if(TotalSaleAmount != null)
             {
-                model.LastMonthSale = (decimal)LastMonthSale;
+                model.TotalSaleAmount = (decimal)TotalSaleAmount;
             }
 
             string query2 = "SELECT SUM(NetSale) FROM view_netsalesreport WHERE CAST(`Date` AS DATE) BETWEEN Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date)"; 
@@ -89,6 +89,10 @@ namespace BaahWebAPI.Controllers
 
             model.CategorywiseSales = catlist;
 
+            if (model.TotalUnitSold > 0)
+            {
+                model.AOV = model.TotalSaleAmount / model.TotalUnitSold;
+            }
             return model;
         }
 
@@ -106,10 +110,10 @@ namespace BaahWebAPI.Controllers
             string tDateM = utility.GetDateString(2, "yyyy-MM-dd");
 
             string query1 = "SELECT SUM(TotalSale) FROM view_salesreport WHERE CAST(DATE AS DATE) Between Cast('" + fDateM + "' as Date) and Cast('" + tDateM + "' as Date)";
-            var LastMonthSale = dapper.Con().Query<decimal?>(query1).FirstOrDefault();
-            if (LastMonthSale != null)
+            var TotalSaleAmount = dapper.Con().Query<decimal?>(query1).FirstOrDefault();
+            if (TotalSaleAmount != null)
             {
-                model.LastMonthSale = (decimal)LastMonthSale;
+                model.TotalSaleAmount = (decimal)TotalSaleAmount;
             }
 
             string query2 = "SELECT SUM(NetSale) FROM view_netsalesreport WHERE CAST(`Date` AS DATE) BETWEEN Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date)";
