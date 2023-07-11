@@ -31,6 +31,7 @@ namespace BaahWebAPI.Controllers
             {
                 cat.CategoryName = cat.CategoryName.Replace("amp;", "");
             }
+            list.RemoveAll(cat => cat.CategoryName == "Our Hotties" || cat.CategoryName == "Trending");
 
             return list;
         }
@@ -48,6 +49,7 @@ namespace BaahWebAPI.Controllers
             {
                 cat.CategoryName = cat.CategoryName.Replace("amp;", "");
             }
+            list.RemoveAll(cat => cat.CategoryName == "Our Hotties" || cat.CategoryName == "Trending");
 
             return list;
         }
