@@ -26,7 +26,7 @@ namespace BaahWebAPI.Controllers
             string fDate = DateTime.Now.AddDays(-7).ToString("yyyy-MM-dd");
             string tDate = DateTime.Now.ToString("yyyy-MM-dd");
 
-            string query = "select DATE_FORMAT(cast(Date as date),'%d/%m/%Y') as DateString,sum(TotalSale) as TotalSale from view_salesreport where cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) group by CAST(Date as Date)";
+            string query = "select DATE_FORMAT(cast(Date as date),'%d/%m/%Y') as DateString,sum(TotalSale) as TotalSale, sum(ItemsSold) as ItemsSold from view_salesreport where cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) group by CAST(Date as Date)";
             var list = dapper.Con().Query<Sale>(query).ToList();
 
             return list;
@@ -48,7 +48,7 @@ namespace BaahWebAPI.Controllers
             string query2 = "";
             if (daysDifference < 32)
             {
-                query2 = "select DATE_FORMAT(cast(Date as date),'%d/%m/%Y') as DateString,sum(TotalSale) as TotalSale from view_salesreport where cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) group by CAST(Date as Date)";
+                query2 = "select DATE_FORMAT(cast(Date as date),'%d/%m/%Y') as DateString,sum(TotalSale) as TotalSale, sum(ItemsSold) as ItemsSold from view_salesreport where cast(Date as Date) Between Cast('" + fDate + "' as Date) and Cast('" + tDate + "' as Date) group by CAST(Date as Date)";
             }
             else if (daysDifference > 31 && daysDifference < 366)
             {
